@@ -2,7 +2,6 @@ package com.unicorn.refactoring;
 
 import com.google.gson.Gson;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,21 +11,28 @@ import java.util.stream.Collectors;
 public class TransactionsHistory {
 
 
+    private final TransactionPeriod transactionPeriod = new TransactionPeriod();
     private TransactionsProvider transactionsProvider;
 
-    public Map<String, Object> retrieveTransactions(Criteria criteria){
-        LocalDate startDate = criteria.getStartDate();
-        LocalDate endDate = criteria.endDate().plusDays(30);
+    public TransactionsHistory(TransactionsProvider transactionsProvider) {
+        this.transactionsProvider = transactionsProvider;
+    }
 
-        List<PaymentTransaction> onlineTransaction = transactionsProvider.retriveTransactions(startDate, endDate);
+    public Map<String, Object> retrieveTransactions(Criteria criteria){
+        DateRange dateRange = transactionPeriod.getDateRange(criteria);
+        return calculateDateRange(dateRange);
+    }
+
+    private Map<String, Object> calculateDateRange(DateRange dateRange) {
+        List<PaymentTransaction> onlineTransaction = transactionsProvider.retriveTransactions(dateRange.getStartDate(), dateRange.getEndDate());
 
         Set<String> debitTransactions = onlineTransaction.stream()
                 .filter(PaymentTransaction::isDebit)
                 .map(debitTransaction -> new Gson().toJson(debitTransaction))
                 .collect(Collectors.toSet());
         Map<String, Object> result = new HashMap<>();
-        result.put("startDate", startDate);
-        result.put("endDate", endDate);
+        result.put("startDate", dateRange.getStartDate());
+        result.put("endDate", dateRange.getEndDate());
         result.put("debitTransactions", debitTransactions);
         return result;
     }
