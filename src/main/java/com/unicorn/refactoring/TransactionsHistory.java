@@ -1,12 +1,9 @@
 package com.unicorn.refactoring;
 
-import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TransactionsHistory {
 
@@ -20,16 +17,13 @@ public class TransactionsHistory {
 
     public Map<String, Object> retrieveTransactions(Criteria criteria){
         DateRange dateRange = transactionPeriod.getDateRange(criteria);
-        return calculateDateRange(dateRange);
+        return calculateTransactions(dateRange);
     }
 
-    private Map<String, Object> calculateDateRange(DateRange dateRange) {
+    private Map<String, Object> calculateTransactions(DateRange dateRange) {
         List<PaymentTransaction> onlineTransaction = transactionsProvider.retriveTransactions(dateRange.getStartDate(), dateRange.getEndDate());
-
-        Set<String> debitTransactions = onlineTransaction.stream()
-                .filter(PaymentTransaction::isDebit)
-                .map(debitTransaction -> new Gson().toJson(debitTransaction))
-                .collect(Collectors.toSet());
+        Set<String> debitTransactions = new Transactions(onlineTransaction).getDebitTransactions();
+        
         Map<String, Object> result = new HashMap<>();
         result.put("startDate", dateRange.getStartDate());
         result.put("endDate", dateRange.getEndDate());
