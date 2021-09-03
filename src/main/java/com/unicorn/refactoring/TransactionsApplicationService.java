@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class TransactionsApplicationService {
 
     //Dekompozycja instrukcji warunkowej.
-    public void applyFxRate(BigDecimal fxRate, PaymentTransaction paymentTransaction){
+    public void applyFxRate(PaymentTransaction paymentTransaction, BigDecimal fxRate){
         if (paymentTransaction.getBaseCurrency().equals(paymentTransaction.getLocalCurrency())
                 && paymentTransaction.getFx() == null) {
             BigDecimal bigDecimal = paymentTransaction.getLocalAmount().multiply(fxRate);
