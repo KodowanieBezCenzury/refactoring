@@ -1,6 +1,5 @@
 package com.unicorn.refactoring;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +21,7 @@ public class TransactionsHistory {
     }
 
     private Map<String, Object> calculateTransactions(DateRange dateRange) {
-        List<PaymentTransaction> onlineTransaction = transactionsProvider.retriveTransactions(dateRange.getStartDate(), dateRange.getEndDate());
+        List<BankingTransaction> onlineTransaction = transactionsProvider.retrieveTransactions(dateRange.getStartDate(), dateRange.getEndDate());
         Set<String> debitTransactions = new Transactions(onlineTransaction).getDebitTransactions();
         Map<String, Object> result = new HashMap<>();
         result.put("startDate", dateRange.getStartDate());

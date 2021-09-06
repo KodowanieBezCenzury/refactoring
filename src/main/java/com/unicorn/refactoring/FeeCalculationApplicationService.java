@@ -2,20 +2,19 @@ package com.unicorn.refactoring;
 
 import java.math.BigDecimal;
 
-public class ZagniezdzonyIfApplicationService {
+public class FeeCalculationApplicationService {
 
-
-    BigDecimal calculate(PaymentTransaction paymentTransaction){
+    BigDecimal calculate(BankingTransaction paymentTransaction) {
         BigDecimal fee;
-        if(paymentTransaction.isDebit()){
+        if (paymentTransaction.isDebit()) {
             fee = calculateDebitFee();
-        }else {
-            if(paymentTransaction.isSettled()){
+        } else {
+            if (paymentTransaction.isSettled()) {
                 fee = calculateSettledTransactionFee();
-            }else {
-                if(paymentTransaction.isForeign()){
+            } else {
+                if (paymentTransaction.isForeign()) {
                     fee = calculateForeignFee();
-                }else {
+                } else {
                     fee = calculateStandardFee();
                 }
             }

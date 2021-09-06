@@ -2,13 +2,25 @@ package com.unicorn.refactoring;
 
 import java.math.BigDecimal;
 
-public class PaymentTransaction {
+public class BankingTransaction {
 
     private BigDecimal baseAmount;
-    private BigDecimal localAmount;
-    private BigDecimal fxRate;
     private String baseCurrency;
+    private BigDecimal localAmount;
     private String localCurrency;
+    private BigDecimal fxRate;
+
+    public BankingTransaction() {
+    }
+
+    public BankingTransaction(BigDecimal amount, String baseCurrency, String localCurrency) {
+        this.baseCurrency = baseCurrency;
+        this.localCurrency = localCurrency;
+        if (baseCurrency.equals(localCurrency)) {
+            baseAmount = amount;
+        }
+        localAmount = amount;
+    }
 
     public boolean isDebit() {
         return baseAmount.compareTo(BigDecimal.ZERO) < 0;
@@ -42,5 +54,9 @@ public class PaymentTransaction {
 
     public boolean isForeign() {
         return false;
+    }
+
+    public BigDecimal getBaseAmount() {
+        return baseAmount;
     }
 }

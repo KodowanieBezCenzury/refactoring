@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 
 public class Transactions {
 
-    private final List<PaymentTransaction> onlineTransaction;
+    private final List<BankingTransaction> onlineTransaction;
 
-    public Transactions(List<PaymentTransaction> onlineTransaction) {
+    public Transactions(List<BankingTransaction> onlineTransaction) {
         this.onlineTransaction = onlineTransaction;
     }
 
     Set<String> getDebitTransactions() {
         return onlineTransaction.stream()
-                .filter(PaymentTransaction::isDebit)
+                .filter(BankingTransaction::isDebit)
                 .map(debitTransaction -> new Gson().toJson(debitTransaction))
                 .collect(Collectors.toSet());
     }
