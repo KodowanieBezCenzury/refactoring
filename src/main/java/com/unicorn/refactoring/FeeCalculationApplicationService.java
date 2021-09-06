@@ -12,7 +12,7 @@ public class FeeCalculationApplicationService {
             if (paymentTransaction.isSettled()) {
                 fee = calculateSettledTransactionFee();
             } else {
-                if (paymentTransaction.isForeign()) {
+                if (paymentTransaction.isForeignExchange()) {
                     fee = calculateForeignFee();
                 } else {
                     fee = calculateStandardFee();

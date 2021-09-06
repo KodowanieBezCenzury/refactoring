@@ -52,7 +52,7 @@ public class BankingTransaction {
         return false;
     }
 
-    public boolean isForeign() {
+    public boolean isForeignExchange() {
         return false;
     }
 
