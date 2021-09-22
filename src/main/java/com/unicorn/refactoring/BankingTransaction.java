@@ -59,4 +59,20 @@ public class BankingTransaction {
     public BigDecimal getBaseAmount() {
         return baseAmount;
     }
+
+    private boolean isForeign() {
+        return !getBaseCurrency().equals(getLocalCurrency())
+                && getFx() == null;
+    }
+
+    private void calculateBaseAmount(BigDecimal fxRate) {
+        BigDecimal bigDecimal = getLocalAmount().multiply(fxRate);
+        setBaseAmount(bigDecimal);
+    }
+
+    void applyFx(BigDecimal fxRate) {
+        if (isForeign()) {
+            calculateBaseAmount(fxRate);
+        }
+    }
 }
