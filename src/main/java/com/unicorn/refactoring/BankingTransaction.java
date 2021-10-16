@@ -4,26 +4,23 @@ import java.math.BigDecimal;
 
 public class BankingTransaction {
 
-    private BigDecimal baseAmount;
-    private String baseCurrency;
-    private BigDecimal localAmount;
-    private String localCurrency;
+    private Money baseMoney;
+    private Money localMoney;
     private BigDecimal fxRate;
 
     public BankingTransaction() {
     }
 
     public BankingTransaction(BigDecimal amount, String baseCurrency, String localCurrency) {
-        this.baseCurrency = baseCurrency;
-        this.localCurrency = localCurrency;
+        localMoney = new Money(amount, localCurrency);
+        baseMoney = new Money(null, baseCurrency);
         if (baseCurrency.equals(localCurrency)) {
-            baseAmount = amount;
+            baseMoney.updateAmount(amount);
         }
-        localAmount = amount;
     }
 
     public boolean isDebit() {
-        return baseAmount.compareTo(BigDecimal.ZERO) < 0;
+        return baseMoney.getAmount().compareTo(BigDecimal.ZERO) < 0;
     }
 
     public BigDecimal getFx() {
@@ -31,21 +28,21 @@ public class BankingTransaction {
     }
 
     public BigDecimal getLocalAmount() {
-        return localAmount;
+        return localMoney.getAmount();
     }
 
 
-    public Object getLocalCurrency() {
-        return localCurrency;
+    public String getLocalCurrency() {
+        return localMoney.getCurrency();
     }
 
     public String getBaseCurrency() {
-        return baseCurrency;
+        return baseMoney.getCurrency();
 
     }
 
     public void setBaseAmount(BigDecimal baseAmount) {
-        this.baseAmount = baseAmount;
+        this.baseMoney.updateAmount(baseAmount);
     }
 
     public boolean isSettled() {
@@ -57,7 +54,7 @@ public class BankingTransaction {
     }
 
     public BigDecimal getBaseAmount() {
-        return baseAmount;
+        return baseMoney.getAmount();
     }
 
     private boolean isForeign() {
