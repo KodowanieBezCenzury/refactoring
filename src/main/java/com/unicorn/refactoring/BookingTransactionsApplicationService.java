@@ -8,22 +8,18 @@ public class BookingTransactionsApplicationService {
         this.transferTransactionAdapter = transferTransactionAdapter;
     }
 
-    public void bookTransaction(BankingTransaction paymentTransaction, boolean isPrioritized) {
-        if (isPrioritized) {
-            validateTransaction(paymentTransaction);
-            checkForHolidays(paymentTransaction);
-            sendImmediately(paymentTransaction);
-        } else {
-            send(paymentTransaction);
-        }
+    public void bookRegular(BankingTransaction paymentTransaction) {
+        transferTransactionAdapter.send(paymentTransaction);
+    }
+
+    public void bookImmediate(BankingTransaction paymentTransaction) {
+        validateTransaction(paymentTransaction);
+        checkForHolidays(paymentTransaction);
+        sendImmediately(paymentTransaction);
     }
 
     private void sendImmediately(BankingTransaction paymentTransaction) {
         transferTransactionAdapter.sendImmediate(paymentTransaction);
-    }
-
-    private void send(BankingTransaction paymentTransaction) {
-        transferTransactionAdapter.send(paymentTransaction);
     }
 
     private void validateTransaction(BankingTransaction paymentTransaction) {

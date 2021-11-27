@@ -17,7 +17,7 @@ public class BookingTransactionTest {
     void shouldSendImmediateWhenFlagIsTrue() {
         BookingTransactionsApplicationService bookingTransactionsApplicationService = new BookingTransactionsApplicationService(transferTransactionAdapter);
         BankingTransaction transaction = new BankingTransaction();
-        bookingTransactionsApplicationService.bookTransaction(transaction, true);
+        bookingTransactionsApplicationService.bookImmediate(transaction);
         Mockito.verify(transferTransactionAdapter, Mockito.times(1)).sendImmediate(ArgumentMatchers.any());
     }
 }
